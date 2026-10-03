@@ -1,0 +1,368 @@
+:root {
+  --bg: #0d0607;
+  
+  /* ألوان الثيم الأساسية: الأحمر والأبيض */
+  --red: #ff2a4b;
+  --red-glow: rgba(255, 42, 75, 0.6);
+  --white: #ffffff;
+  --white-glow: rgba(255, 255, 255, 0.3);
+  
+  --text: #ffffff;
+  --muted: #b8acae;
+  --line: rgba(255, 42, 75, 0.25);
+  --ok: #ff2a4b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  direction: ltr;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.EL-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: 
+    radial-gradient(circle at 50% 25%, rgba(255, 42, 75, 0.2) 0%, transparent 60%),
+    radial-gradient(circle at 80% 85%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
+    var(--bg);
+}
+
+/* شريط علوي بارز بحجم أكبر */
+.EL-top {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(13, 6, 7, 0.7);
+  backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 10;
+}
+
+.EL-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.EL-brand img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px var(--red-glow));
+}
+
+.EL-brand strong {
+  display: block;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.EL-brand small {
+  display: block;
+  color: var(--red);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-top: 3px;
+  font-weight: 700;
+}
+
+.EL-ready {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--red);
+  border: 1px solid rgba(255, 42, 75, 0.5);
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(255, 42, 75, 0.12);
+  box-shadow: 0 0 18px rgba(255, 42, 75, 0.25);
+}
+
+/* المنطقة الرئيسية لتوزيع العناصر بحرية */
+.EL-main {
+  width: min(920px, calc(100% - 40px));
+  margin: auto;
+  padding: 50px 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* إلغاء المربع والإطار الخارجي */
+.EL-card {
+  width: 100%;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.EL-card::after {
+  display: none !important;
+}
+
+/* التنسيق الحر للوجو والنصوص بحجم مكبر */
+.EL-hero {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.EL-logo {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 35px var(--red-glow));
+}
+
+.EL-kicker {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #ffffff;
+  margin-bottom: 8px;
+  text-shadow: 0 0 12px var(--white-glow);
+}
+
+.EL-title {
+  font-size: 56px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin: 0 0 16px;
+  color: #ffffff;
+}
+
+.EL-title span {
+  color: var(--red);
+  text-shadow: 0 0 25px var(--red-glow);
+}
+
+.EL-sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.6;
+  direction: rtl;
+  text-align: right;
+  font-weight: 500;
+}
+
+/* صناديق المعلومات المكبرة */
+.EL-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.EL-box {
+  padding: 18px 14px;
+  border: 1px solid rgba(255, 42, 75, 0.35);
+  border-radius: 16px;
+  background: rgba(255, 42, 75, 0.05);
+  backdrop-filter: blur(8px);
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.EL-box small {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.EL-box strong {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.ok {
+  color: var(--red) !important;
+}
+
+/* شريط حالة التحميل مكبّر وحر */
+.EL-status {
+  margin-top: 32px;
+  padding: 20px 26px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 72px;
+}
+
+.EL-status-main, #msg {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.EL-status-note, .EL-runtime-note {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.EL-loader {
+  width: 140px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.EL-loader i {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--red), var(--white));
+  box-shadow: 0 0 15px var(--red);
+  animation: load 1.4s ease-in-out infinite;
+}
+
+#spin {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--red);
+  border-right-color: #ffffff;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  flex: 0 0 auto;
+}
+
+/* زر الهاتف بارز ومكبر */
+.EL-phones {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.EL-phone {
+  flex: 1 1 100%;
+  text-align: center;
+  padding: 18px 24px;
+  border-radius: 16px;
+  border: 2px solid var(--red);
+  background: rgba(255, 42, 75, 0.18);
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 25px rgba(255, 42, 75, 0.25);
+}
+
+.EL-phone:hover {
+  background: rgba(255, 42, 75, 0.35);
+  box-shadow: 0 0 35px var(--red-glow);
+  transform: translateY(-2px);
+}
+
+/* الفوتر */
+.EL-foot {
+  padding: 20px 32px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 2px;
+  position: relative;
+  z-index: 1;
+  background: rgba(13, 6, 7, 0.85);
+}
+
+#state, #out {
+  display: none;
+}
+
+body.done #spin { display: none; }
+body.done #msg { color: var(--red); }
+body.fail #spin { display: none; }
+body.fail #msg { color: #ff2a4b; }
+
+body.log .EL-hero { display: block; }
+body.log .EL-logo { display: none; }
+body.log #spin, body.log #msg { display: none; }
+body.log #wrap { display: block; }
+body.log #state {
+  display: block;
+  font-size: 22px;
+  font-weight: 900;
+  margin: 0 0 12px;
+  color: var(--red);
+}
+body.log #out {
+  display: block;
+  white-space: pre-wrap;
+  font: 13px/1.6 Consolas, monospace;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px;
+  height: calc(100vh - 220px);
+  overflow-y: auto;
+  color: #e2d7d8;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes load {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(200%); }
+}
+
+/* للتجاوب مع الشاشات الصغيرة والهواتف */
+@media(max-width: 700px) {
+  .EL-top { padding: 0 18px; height: 66px; }
+  .EL-main { width: min(94%, 920px); padding: 24px 0; }
+  .EL-hero { grid-template-columns: 1fr; text-align: center; gap: 24px; }
+  .EL-logo { width: 160px; height: 160px; margin: 0 auto; }
+  .EL-sub { text-align: center; font-size: 16px; }
+  .EL-title { font-size: 38px; }
+  .EL-info { grid-template-columns: 1fr; }
+  .EL-foot { padding: 16px; flex-direction: column; text-align: center; gap: 8px; }
+  .EL-status { flex-direction: column; align-items: center; text-align: center; }
+  .EL-loader { width: 100%; }
+}
