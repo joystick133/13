@@ -28,7 +28,7 @@
           <div class="EL-info">
             <div class="EL-box"><small>FIRMWARE</small><strong id="firmware">DETECTING…</strong></div>
             <div class="EL-box"><small>HOST MODE</small><strong class="ok">AUTO RUN</strong></div>
-            <div class="EL-box"><small>OFFLINE</small><strong class="ok">CACHE READY</strong></div>
+            <div class="EL-box"><small>OFFLINE</small><strong class="ok" id="cache-status">CACHE READY</strong></div>
           </div>
 
           <div class="EL-status">
@@ -41,9 +41,9 @@
 
           <div class="EL-phones">
             <a class="EL-phone" href="tel:01558482818">01558482818</a>
-            </div>
-            <div class="EL-phones">
-            <a class="EL-phone" href="tel:دمياط الجديدة نادي مصر الرياضي بجوار الموقف الشرقي">دمياط الجديدة نادي مصر الرياضي بجوار الموقف الشرقي</a>
+          </div>
+          <div class="EL-phones">
+            <a class="EL-phone" href="#">دمياط الجديدة نادي مصر الرياضي بجوار الموقف الشرقي</a>
           </div>
         </div>
       </div>
@@ -51,58 +51,105 @@
   </main>
 
   <footer class="EL-foot">
-   <span>JOY HOST</span>
-  <span>DESIGNED BY MIGO</span>
+    <span>JOY HOST</span>
+    <span>DESIGNED BY MIGO</span>
     <span>SUPPORTED FW: 13.02 · 13.04 · 13.50 · 13.52</span>
   </footer>
 </div>
 
 <script>
 (function(){
-  var stateEl=document.getElementById('state'), detailEl=document.getElementById('detail'), fwEl=document.getElementById('firmware');
-  function setState(t){stateEl.textContent=t;}
-  function setDetail(t){detailEl.textContent=t;}
+  var stateEl = document.getElementById('state'), 
+      detailEl = document.getElementById('detail'), 
+      fwEl = document.getElementById('firmware'),
+      cacheStatusEl = document.getElementById('cache-status');
 
-  var params=new URLSearchParams(location.search);
-  var SUPPORTED={1302:1,1304:1,1350:1,1352:1};
-  var key=null,fwnum=null;
-  var m=/PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
+  function setState(t){ stateEl.textContent = t; }
+  function setDetail(t){ detailEl.textContent = t; }
+
+  var params = new URLSearchParams(location.search);
+  var SUPPORTED = {1302:1, 1304:1, 1350:1, 1352:1};
+  var key = null, fwnum = null;
+  var m = /PlayStation\s+4[\/ ](\d+)\.(\d+)/.exec(navigator.userAgent);
+  
   if(m){
-    var ms=parseInt(m[2],16).toString(16); if(ms.length<2)ms='0'+ms;
-    key=m[1]+'.'+ms; fwnum=parseInt(m[1],10)*100+parseInt(ms,10);
+    var ms = parseInt(m[2], 16).toString(16); 
+    if(ms.length < 2) ms = '0' + ms;
+    key = m[1] + '.' + ms; 
+    fwnum = parseInt(m[1], 10) * 100 + parseInt(ms, 10);
   }
-  fwEl.textContent=key||'UNKNOWN';
+  fwEl.textContent = key || 'UNKNOWN';
 
-  var forced=params.get('force')==='1';
-  var supported=forced||(fwnum!==null&&SUPPORTED[fwnum]===1);
-  var target='jb.html'+location.search;
-  function go(){setState('Launching host…');setDetail('Opening the jailbreak page automatically.');location.replace(target);}
-  function autoGo(msg,delay){setState(msg);setTimeout(go,delay||0);}
+  var forced = params.get('force') === '1';
+  var supported = forced || (fwnum !== null && SUPPORTED[fwnum] === 1);
+  var target = 'jb.html' + location.search;
+
+  function go(){
+    setState('Launching host…');
+    setDetail('Opening the jailbreak page automatically.');
+    location.replace(target);
+  }
+
+  function autoGo(msg, delay){
+    setState(msg);
+    setTimeout(go, delay || 0);
+  }
 
   if(!supported){
-    autoGo('Launching…',250);
+    autoGo('Launching…', 250);
     return;
   }
 
-  var ac=window.applicationCache;
-  if(!ac||!document.documentElement.hasAttribute('manifest')){
+  var ac = window.applicationCache;
+  if(!ac || !document.documentElement.hasAttribute('manifest')){
     go();
-  }else if(!navigator.onLine){
-    setState('Offline cache ready');setDetail('Launching automatically from the saved cache.');go();
-  }else if(ac.status===ac.IDLE){
-    setState('Host ready');setDetail('Launching automatically.');go();
-  }else if(ac.status===ac.UPDATEREADY){
-    try{ac.swapCache();}catch(e){}
-    autoGo('Cache updated',250);
-  }else{
-    setState('Preparing cache…');setDetail('First run or cache update in progress.');
-    ac.addEventListener('downloading',function(){setDetail('Saving files for offline use…');},false);
-    ac.addEventListener('progress',function(e){if(e&&e.total)setDetail('Caching '+Math.round((e.loaded/e.total)*100)+'%');},false);
-    ac.addEventListener('cached',function(){setState('Cache ready');setDetail('Launching automatically.');setTimeout(go,400);},false);
-    ac.addEventListener('updateready',function(){try{ac.swapCache();}catch(e){}setState('Cache updated');setDetail('Launching automatically.');setTimeout(go,400);},false);
-    ac.addEventListener('noupdate',function(){setState('Host ready');setDetail('Launching automatically.');go();},false);
-    ac.addEventListener('error',function(){autoGo('Starting host…',250);},false);
-    ac.addEventListener('obsolete',function(){autoGo('Starting host…',250);},false);
+  } else if(!navigator.onLine){
+    setState('Offline cache ready');
+    setDetail('Launching automatically from the saved cache.');
+    go();
+  } else if(ac.status === ac.IDLE){
+    setState('Host ready');
+    setDetail('Launching automatically.');
+    go();
+  } else if(ac.status === ac.UPDATEREADY){
+    try{ ac.swapCache(); }catch(e){}
+    autoGo('Cache updated', 250);
+  } else {
+    setState('Preparing cache…');
+    setDetail('First run or cache update in progress.');
+    
+    ac.addEventListener('downloading', function(){ setDetail('Saving files for offline use…'); }, false);
+    ac.addEventListener('progress', function(e){
+      if(e && e.total) setDetail('Caching ' + Math.round((e.loaded / e.total) * 100) + '%');
+    }, false);
+    
+    ac.addEventListener('cached', function(){
+      setState('Cache ready');
+      setDetail('Launching automatically.');
+      setTimeout(go, 400);
+    }, false);
+    
+    ac.addEventListener('updateready', function(){
+      try{ ac.swapCache(); }catch(e){}
+      setState('Cache updated');
+      setDetail('Launching automatically.');
+      setTimeout(go, 400);
+    }, false);
+    
+    ac.addEventListener('noupdate', function(){
+      setState('Host ready');
+      setDetail('Launching automatically.');
+      go();
+    }, false);
+    
+    ac.addEventListener('error', function(){
+      if (cacheStatusEl) cacheStatusEl.textContent = "OFFLINE READY";
+      autoGo('Starting host…', 250);
+    }, false);
+    
+    ac.addEventListener('obsolete', function(){
+      autoGo('Starting host…', 250);
+    }, false);
   }
 })();
 </script>
